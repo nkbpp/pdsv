@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <title>pdsv</title>
+    <style>
+        table {
+            margin: 0px;
+            padding: 0px;
+            border-collapse: collapse; /*убираем пустые промежутки между ячейками*/
+            border: 2px solid grey; /*устанавливаем для таблицы внешнюю границу серого цвета толщиной 1px*/
+        }
+        th {
+            text-align: center;
+            border-collapse: collapse; /*убираем пустые промежутки между ячейками*/
+            border: 2px solid grey; /*устанавливаем для таблицы внешнюю границу серого цвета толщиной 1px*/
+        }
+        tr {
+            margin: 0px;
+            padding: 0px;
+        }
+        td {
+            margin: 0px;
+            padding: 5px;
+            text-align: center;
+            border-collapse: collapse; /*убираем пустые промежутки между ячейками*/
+            border: 2px solid grey; /*устанавливаем для таблицы внешнюю границу серого цвета толщиной 1px*/
+        }
+    </style>
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //применить фильтр
+            $("#filter").on('click', 'a', function () {
+/*                if ($(this).attr('id') == "filtergo") {
+                    var param = "dat1=" + $("#dat1").val() +
+                        "&dat2=" + $("#dat2").val();
+                    $("#tab").load("/pdsv/opfr/filter", param);
+                }*/
+                if ($(this).attr('id') == "filtergo") {
+                    var param = "dat1=" + $("#dat1").val() +
+                        "&dat2=" + $("#dat2").val();
+                    $("#tab").load("/pdsv/opfr/filter", param, function() {
+                        //href="/pdsv/opfr/documentpechat?date1=01.08.2019&amp;date2=31.08.2019"
+
+                        var dat1 = $("#dat1").val().split("-");
+                        var dat2 = $("#dat2").val().split("-");
+                        //ВЫВЕСТИ ДАТУ В НУЖНОМ ФОРМАТЕ!!!!
+                        console.log($("#xls").attr("href"));
+                        $("#xls").attr("href","/pdsv/opfr/documentpechat?date1=" +
+                            dat1[2] + "." + dat1[1] + "." + dat1[0] +
+                            "&date2=" +
+                            dat2[2] + "." + dat2[1] + "." + dat2[0]);
+                        console.log($("#xls").attr("href"));
+                    });
+                }
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div th:insert="fragment/logout :: logout(${user})"></div>
+
+<div class="row" id="filter">
+    <div class="col s4">
+        <label for="dat1">Дата с</label>
+        <input placeholder="Дата с" id="dat1" type="date" th:value="${date11}">
+    </div>
+    <div class="col s4">
+        <label for="dat2">Дата по</label>
+        <input placeholder="Дата по" id="dat2" type="date" th:value="${date21}">
+    </div>
+    <div class="col s4">
+        <a class="waves-effect waves-light btn" id="filtergo">Применить фильтр</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col center">
+        <a id="xls" th:href="@{/pdsv/opfr/documentpechat(date1=${date1},date2=${date2})}" download>Скачать в формате Exel</a>
+    </div>
+</div>
+
+<div id="tab" th:insert="fragmentopfr/fragment :: table(${trays})"></div>
+
+</body>
+</html>

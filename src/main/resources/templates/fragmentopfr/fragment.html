@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+
+<div th:fragment="table(trays)">
+    <div th:text="'Показаны результаты за период с ' + ${date1} + ' по ' + ${date2} + ' '"></div>
+    <table>
+        <tr>
+            <th align="center">№</th>
+            <th align="center">Наименование района</th>
+            <th align="center">№ районов</th>
+            <th align="center">контрольный показатель по району</th>
+            <th align="center">сумма ФЛ</th>
+            <th align="center">сумма ЮЛ</th>
+            <th align="center">итого</th>
+            <th align="center">% выполнения контр.показателей</th>
+        </tr>
+        <tr th:each="t : ${trays}">
+            <td  th:text="${t.getId()}">
+            </td>
+            <td  th:text="${t.getName()}">
+            </td>
+            <td  th:text="${t.getNum()}">
+            </td>
+            <td  th:text="${t.getChecksums()}">
+            </td>
+            <td  th:text="${t.getFls()}">
+            </td>
+            <td  th:text="${t.getJuls()}">
+            </td>
+            <td  th:text="${t.getItogs()}">
+            </td>
+            <td  th:text="${t.getProzents()}">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td  th:text="итого"></td>
+            <td  th:text="${sumChecksums}"></td>
+            <td  th:text="${sumFl}"></td>
+            <td  th:text="${sumJul}"></td>
+            <td  th:text="${sumItog}"></td>
+            <td  th:text="${sumProzent}"></td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>
